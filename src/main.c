@@ -6,6 +6,17 @@
 #include "general.h"
 #include "raylib.h"
 
+typedef struct
+{
+    Color background;
+    Color title;
+    Color text;
+    int title_size;
+    int text_size;
+    int slide_number_size;
+    bool show_slide_numbers;
+} Theme;
+
 int main(int argc, char *argv[])
 {
     if (argc != 2)
@@ -15,11 +26,24 @@ int main(int argc, char *argv[])
     }
 
     ///////////////////////////////////////////////////////////////////////////
+    // set up defaults
+    Theme theme = {
+        .background = BLACK,
+        .title = ORANGE,
+        .text = RAYWHITE,
+        .title_size = 40,
+        .text_size = 30,
+        .slide_number_size = 20,
+        .show_slide_numbers = true,
+    };
+
+    ///////////////////////////////////////////////////////////////////////////
     // Read in the markdown file
+    // [ ] header at top of markdown file should be able to update the theme
+    // [ ] header should be able to update font sizes
 
     ///////////////////////////////////////////////////////////////////////////
     // Start raylib application
-    bool show_slide_number = true;
     int slide_index = 0; // temp
     int num_slides = 30; // temp
 
@@ -55,10 +79,10 @@ int main(int argc, char *argv[])
 
         BeginTextureMode(texture);
 
-        DrawText("Congrats! You created your first window!", 190, 200, 20,
-                 LIGHTGRAY);
+        DrawText("Congrats! You created your first window!", 190, 200,
+                 theme.text_size, LIGHTGRAY);
 
-        if (show_slide_number)
+        if (theme.show_slide_numbers)
         {
             char buffer[10];
             if (sprintf(buffer, "%d/%d", slide_index, num_slides) < 0)
@@ -68,11 +92,11 @@ int main(int argc, char *argv[])
                 exit(1);
             }
 
-            const int font_size = 20;
-            const Vector2 text_dimensions =
-                MeasureTextEx(GetFontDefault(), buffer, font_size, 0);
+            const Vector2 text_dimensions = MeasureTextEx(
+                GetFontDefault(), buffer, theme.slide_number_size, 0);
             DrawText(buffer, default_width - 1.3 * text_dimensions.x,
-                     default_height - 1.3 * text_dimensions.y, font_size, RED);
+                     default_height - 1.3 * text_dimensions.y,
+                     theme.slide_number_size, RED);
         }
 
         EndTextureMode();

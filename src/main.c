@@ -58,6 +58,7 @@ int main(int argc, char *argv[])
 
     while (!WindowShouldClose())
     {
+        /////////// Handle Key Presses ///////////
         if (IsKeyPressed(KEY_H) || IsKeyPressed(KEY_A) ||
             IsKeyPressed(KEY_LEFT))
         {
@@ -84,6 +85,7 @@ int main(int argc, char *argv[])
                 HideCursor();
         }
 
+        /////////// set up for drawing ///////////
         RenderTexture2D texture =
             LoadRenderTexture(default_width, default_height);
         BeginDrawing();
@@ -165,6 +167,7 @@ int main(int argc, char *argv[])
             DrawCircle(mouse.x, mouse.y, 5, RED);
         }
 
+        /////////// finish drawing ///////////
         EndTextureMode();
 
         DrawTexturePro(

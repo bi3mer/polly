@@ -25,6 +25,9 @@ int main(int argc, char *argv[])
         exit(0);
     }
 
+    // How to open a website on MacOS. Will use for hyperlinks.
+    // system("open https://bi3mer.github.io");
+
     ///////////////////////////////////////////////////////////////////////////
     // set up defaults
     Theme theme = {
@@ -78,6 +81,7 @@ int main(int argc, char *argv[])
 
         if (IsKeyPressed(KEY_S))
         {
+            // @BUG: doesn't seem to work on MacOS
             show_cursor = !show_cursor;
             if (show_cursor)
                 ShowCursor();
@@ -159,7 +163,6 @@ int main(int argc, char *argv[])
         /////////// red laser cursor ///////////
         if (!show_cursor)
         {
-            HideCursor();
             Vector2 mouse = GetMousePosition();
             mouse.x = (mouse.x / screen_width) * default_width;
             mouse.y = (mouse.y / screen_height) * default_height;

@@ -4,8 +4,6 @@ project(polly VERSION 1.0.0 LANGUAGES C CXX)
 # Set C/C++ standards
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Generate compile_commands.json for better IDE support
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -27,7 +25,6 @@ add_subdirectory(lib/raylib)
 # Collect source files
 file(GLOB_RECURSE SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
 )
 
 # Create executable

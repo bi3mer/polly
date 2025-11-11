@@ -11,6 +11,8 @@ typedef struct
     Color background;
     Color title;
     Color text;
+    int render_width;
+    int render_height;
     int title_size;
     int text_size;
     int slide_number_size;
@@ -34,6 +36,8 @@ int main(int argc, char *argv[])
         .background = BLACK,
         .title = ORANGE,
         .text = RAYWHITE,
+        .render_width = 1080,
+        .render_height = 720,
         .title_size = 40,
         .text_size = 30,
         .slide_number_size = 20,
@@ -50,13 +54,10 @@ int main(int argc, char *argv[])
     int slide_index = 0; // temp
     int num_slides = 30; // temp
     bool show_cursor = true;
-    bool show_help = false;
-
-    const int default_width = 1080;
-    const int default_height = 720;
+    bool show_info = false;
 
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-    InitWindow(default_width, default_height, "Polly");
+    InitWindow(theme.render_width, theme.render_height, "Polly");
     SetTargetFPS(30);
 
     while (!WindowShouldClose())
@@ -74,9 +75,9 @@ int main(int argc, char *argv[])
             slide_index = min_i(num_slides - 1, slide_index + 1);
         }
 
-        if (IsKeyPressed(KEY_H))
+        if (IsKeyPressed(KEY_I))
         {
-            show_help = !show_help;
+            show_info = !show_info;
         }
 
         if (IsKeyPressed(KEY_S))
@@ -91,7 +92,7 @@ int main(int argc, char *argv[])
 
         /////////// set up for drawing ///////////
         RenderTexture2D texture =
-            LoadRenderTexture(default_width, default_height);
+            LoadRenderTexture(theme.render_width, theme.render_height);
         BeginDrawing();
 
         const int screen_width = GetScreenWidth();
@@ -117,28 +118,28 @@ int main(int argc, char *argv[])
 
             const Vector2 text_dimensions = MeasureTextEx(
                 GetFontDefault(), buffer, theme.slide_number_size, 0);
-            DrawText(buffer, default_width - 1.3 * text_dimensions.x,
-                     default_height - 1.3 * text_dimensions.y,
+            DrawText(buffer, theme.render_width - 1.3 * text_dimensions.x,
+                     theme.render_height - 1.3 * text_dimensions.y,
                      theme.slide_number_size, theme.text);
         }
 
-        /////////// help menu ///////////
-        if (show_help)
+        /////////// info menu ///////////
+        if (show_info)
         {
             const int help_title_size = 30;
             const int help_font_size = 25;
-            const Vector2 top_left = {.x = 0.1 * default_width,
-                                      .y = 0.1 * default_height};
+            const Vector2 top_left = {.x = 0.1 * theme.render_width,
+                                      .y = 0.1 * theme.render_height};
             const Vector2 dimensions = {
-                .x = default_width * 0.8,
-                .y = default_height * 0.8,
+                .x = theme.render_width * 0.8,
+                .y = theme.render_height * 0.8,
             };
 
             DrawRectangleV(top_left, dimensions, LIGHTGRAY);
 
             // title
-            const int tile_width = MeasureText("Help Menu", help_font_size);
-            DrawText("Help Menu",
+            const int tile_width = MeasureText("Info Menu", help_font_size);
+            DrawText("Info Menu",
                      top_left.x + dimensions.x / 2 - tile_width / 2,
                      top_left.x - 20, help_title_size, RED);
 
@@ -164,8 +165,8 @@ int main(int argc, char *argv[])
         if (!show_cursor)
         {
             Vector2 mouse = GetMousePosition();
-            mouse.x = (mouse.x / screen_width) * default_width;
-            mouse.y = (mouse.y / screen_height) * default_height;
+            mouse.x = (mouse.x / screen_width) * theme.render_width;
+            mouse.y = (mouse.y / screen_height) * theme.render_height;
 
             DrawCircle(mouse.x, mouse.y, 5, RED);
         }
